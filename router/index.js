@@ -17,7 +17,7 @@ router.use('/user', userRouter)
 //gig route
 router.use('/gig', gigRouter)
 
-router.use('/worker', workerRouter )
+router.use('/worker', workerRouter)
 
 ////////////////////////////////////////////////////
 
