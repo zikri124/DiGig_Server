@@ -1,6 +1,21 @@
 require('dotenv').config()
 const db = require('../database')
 
+const getUserData = async (req, res, next) => {
+    const id = req.user.id
+    const [data] = await db.query('select * from users where id = ?', [id])
+    if (data.length > 0) {
+        res.json({
+            "id" : id,
+            "userData" : data[0]
+        })
+    } else {
+        res.status(501)
+        const error = new Error("Internal server error")
+        next(error)
+    }
+}
+
 const viewWorker = async (req, res, next) => {
     const id = req.params.workerId
     const [rows] = await db.query('select users.name, users.photoProfile, users.city, workers.salary, workers.avgRate, workers.skills, workers.summary from users inner join workers on users.id = workers.userId where users.id = ?', [id])
@@ -87,6 +102,7 @@ const updateUserData = (req, res, next) => {
 }
 
 const userController = {
+    getUserData,
     viewWorker,
     viewWorkerFull,
     findUser,
