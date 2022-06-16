@@ -50,12 +50,29 @@ const findUser = async (req, res, next) => {
     }
 }
 
+const updateUserPhoto = (req, res, next) => {
+    const userId = req.user.id
+    const newPhoto = req.file.originalname
+    db.query('update users set photoProfile = ? where id = ?', [newPhoto, userId])
+        .then(() => {
+            res.json({
+                "success": true,
+                "message": "Update profile photo success"
+            })
+        })
+        .catch(() => {
+            res.status(501)
+            const error = new Error("Internal server error")
+            next(error)
+        })
+} 
+
 const updateUserData = (req, res, next) => {
     const userId = req.user.id
     const newName = req.body.name
-    const newAdress = req.body.address
-    const newPhoto = req.file.originalname
-    db.query('update users set name = ?, address = ? where id = ?', [newName, newAdress, userId])
+    const newPhone = req.body.phone
+    const newCity = req.body.city
+    db.query('update users set name = ?, city = ?, phoneNum = ? where id = ?', [newName, newCity, newPhone, userId])
         .then(() => {
             res.json({
                 "success": true,
@@ -73,6 +90,7 @@ const userController = {
     viewWorker,
     viewWorkerFull,
     findUser,
+    updateUserPhoto,
     updateUserData
 }
 

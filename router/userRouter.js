@@ -7,8 +7,8 @@ router.get('/search', userController.findUser)
 
 router.get('/worker/:workerId', userController.viewWorker)
 
-//router.get('/view/:id', userController.)
+router.put('/update/photo', checkToken, upload.single('photo'), userController.updateUserPhoto)
 
-router.put('/update', checkToken, upload.single('photo'), userController.updateUserData)
+router.put('/update', checkToken, userController.updateUserData)
 
 module.exports = router
